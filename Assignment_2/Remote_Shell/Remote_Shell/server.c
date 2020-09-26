@@ -84,15 +84,15 @@ int main(int argc, char *argv[]){
     
     /*---- Accept call creates a new socket for the incoming connection ----*/
     while(1){
-        printf("Entering while loop\n");
+        
         newSocket = accept(welcomeSocket, (struct sockaddr *) &clientAddr, &client_len);
-//        dup2(newSocket, STDOUT_FILENO);
+
 //        dup2(newSocket, STDERR_FILENO);
         if (newSocket<0){
             error("Error while accepting\n");
         }
         
-        printf("New socket created\n");
+        
         
         bzero(buffer, BUFFER_SIZE);
         /*---- Send message to the socket of the incoming connection ----*/
@@ -102,40 +102,34 @@ int main(int argc, char *argv[]){
         }
         
 
-        printf("New socket read %s\n", buffer);
+       
         strcpy(data,  buffer);
-        printf("%s %s\n",data,buffer);
+        
         if (strcmp(data, "quit\n")==0){
-            printf("You asked me to quit \n");
+            
             
             send(newSocket,data,20,0);
             
             exit(0);
             break;
         } // this will force the code to exit
-           
         
-        
-        printf("Whats goin on\n");
         parsing(data,args);
-        printf("Heyya \n");
+        
         pid_t pid = fork();
         if (pid >0){//parent process
-            printf("I am in parent\n");
+            
             wait(NULL);
-            printf("\n");
-            
             send(newSocket,"Success",20,0);
-            printf("Child completed \n");
-            
             
         }
         
         else if (pid==0){//child process
+            dup2(newSocket, STDOUT_FILENO);
             if (execvp(args[0],args)< 0){
                 error("Could not execvp command\n");
             }
-            printf("I am in child\n");
+           
             
         }
         else{
@@ -143,15 +137,11 @@ int main(int argc, char *argv[]){
             error("Error while forking\n");
             exit(1);
         }
-        
-        printf("finishing the socket work\n");
-        
-       
     }
-    printf("Freeing args\n");
+  
     close(newSocket);
+    close(welcomeSocket);
     exit(0);
-    
     
     return 0;
     

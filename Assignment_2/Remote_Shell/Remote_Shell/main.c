@@ -1,5 +1,3 @@
-
-
 /****************** CLIENT CODE ****************/
 
 #include <stdio.h>
@@ -64,16 +62,15 @@ int main(int argc, char *argv[]){
         printf("command please> ");
         bzero(buffer,BUFFER_SIZE);
         fgets(buffer,BUFFER_SIZE,stdin);
-        fgets(buffer,BUFFER_SIZE,stderr);
-        fgets(buffer,BUFFER_SIZE,stdout);
-        printf("Before write in client\n");
+
+        
         n = write(clientSocket,buffer,strlen(buffer));
         if (n < 0)
         {
             error("ERROR writing to socket\n");
         }
         bzero(buffer,BUFFER_SIZE);
-        printf("Before read in client\n");
+       
         n = read(clientSocket,buffer,BUFFER_SIZE);
         if (n < 0)
         {
