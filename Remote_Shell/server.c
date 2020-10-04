@@ -7,27 +7,26 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/wait.h>
-//#include <fcntl.h>
+
 
 #define BUFFER_SIZE 2048
 #define MAX 2048
-
 void error(char *msg){
     perror(msg);
     exit(1);
 }
 
-void parsing(char *inputBuffer, char **args){
-    char *s = " \n";
+void parsing(char inputBuffer[], char *args[])
+{
+    const char s[4] = " \t\n";
     char *token;
-    int i = 0;
-    
     token = strtok(inputBuffer, s);
-    
-    while( token != NULL){
+    int i = 0;
+    while( token != NULL)
+    {
         args[i] = token;
         i++;
+        //printf("%s\n", token);
         token = strtok(NULL,s);
     }
     args[i] = NULL;
@@ -36,8 +35,14 @@ void parsing(char *inputBuffer, char **args){
 }
 int main(int argc, char *argv[]){
     int welcomeSocket, newSocket, port_number, client_len;
+    char buffer[BUFFER_SIZE];
     struct sockaddr_in serverAddr, clientAddr;
+    char data[MAX];
+    data[0] = '\0';
+    memset(data,0,MAX);
     int n;
+    char *args[100];
+    
     
     if (argc<2){
         fprintf(stderr,"No port number provided\n");
@@ -81,65 +86,65 @@ int main(int argc, char *argv[]){
     while(1){
         
         newSocket = accept(welcomeSocket, (struct sockaddr *) &clientAddr, &client_len);
-        
+
+//        dup2(newSocket, STDERR_FILENO);
         if (newSocket<0){
             error("Error while accepting\n");
+        }
+        
+        
+        
+        bzero(buffer, BUFFER_SIZE);
+        /*---- Send message to the socket of the incoming connection ----*/
+        n = read(newSocket,buffer,BUFFER_SIZE);
+        if (n<0){
+            error("Error while reading\n");
+        }
+        
+
+       
+        strcpy(data,  buffer);
+        
+        if (strcmp(data, "quit\n")==0){
+            
+            
+            send(newSocket,data,20,0);
+            
+            exit(0);
             break;
-        }
-        printf("Connection established with %s port %d\n",  inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
+        } // this will force the code to exit
         
-        fflush(NULL);
-        pid_t pidC = fork();
+        parsing(data,args);
         
-        
-        
-        if(pidC == 0){
+        pid_t pid = fork();
+        if (pid >0){//parent process
             
-            char *buffer = malloc(sizeof(char) * MAX);
-            char **args  = malloc(sizeof(char *) * 6); //max number of parameters accepted
+            wait(NULL);
+            send(newSocket,"Success",20,0);
+            
+        }
+        
+        else if (pid==0){//child process
             dup2(newSocket, STDOUT_FILENO);
-            dup2(newSocket, STDERR_FILENO);
-            
-            while(1){
-                n = read(newSocket,buffer,MAX);
-                if (n<0){
-                    perror("Error while reading\n");
-                    break;
-                }
-                printf(" %s server side", buffer);
-                if(strncmp(buffer, "quit", 4)==0){
-                    close(newSocket);
-                    break;
-                }
-                /******************************/
-                parsing(buffer,args);
-                
-                pid_t pidH = fork();
-                if (pidH > 0){        //parent process
-                    wait(NULL);
-                    //waitpid(pidH, NULL, 0);
-                }
-                else if (pidH == 0){  //child process
-                    
-                    if (execvp(args[0],args)< 0){
-                        printf("Could not execvp command\n");
-                    }
-                }
-                else{                 //error
-                    error("Error while forking\n");
-                }
-                /********************************/
-                //clear buffer and args for next reads
-                memset(buffer,'\0', sizeof(char) * MAX);
-                memset(args,'\0', sizeof(char *) * 6);
+            if (execvp(args[0],args)< 0){
+                error("Could not execvp command\n");
             }
+           
+            
         }
-        else if (pidC < 0){
-            printf("Error while fork");
+        else{
+            //pid<0
+            error("Error while forking\n");
             exit(1);
         }
     }
-    //close the sockets
+  
+    close(newSocket);
     close(welcomeSocket);
+    exit(0);
+    
     return 0;
+    
+    
+    
 }

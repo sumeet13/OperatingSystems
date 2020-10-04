@@ -91,8 +91,6 @@ int main(int argc, char *argv[]){
         fflush(NULL);
         pid_t pidC = fork();
         
-        
-        
         if(pidC == 0){
             
             char *buffer = malloc(sizeof(char) * MAX);
@@ -106,8 +104,8 @@ int main(int argc, char *argv[]){
                     perror("Error while reading\n");
                     break;
                 }
-                printf(" %s server side", buffer);
                 if(strncmp(buffer, "quit", 4)==0){
+                    printf("quit");
                     close(newSocket);
                     break;
                 }
@@ -139,7 +137,6 @@ int main(int argc, char *argv[]){
             exit(1);
         }
     }
-    //close the sockets
     close(welcomeSocket);
     return 0;
 }

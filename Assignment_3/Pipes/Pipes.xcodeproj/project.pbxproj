@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		436526F22518410000F74D88 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 436526F12518410000F74D88 /* main.c */; };
-		436526FC251842FA00F74D88 /* server.c in Sources */ = {isa = PBXBuildFile; fileRef = 436526FA251842FA00F74D88 /* server.c */; };
+		4393CE6725298146005E2F1B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4393CE6625298146005E2F1B /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		436526EC2518410000F74D88 /* CopyFiles */ = {
+		4393CE6125298146005E2F1B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -24,13 +23,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		436526EE2518410000F74D88 /* Remote_Shell */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Remote_Shell; sourceTree = BUILT_PRODUCTS_DIR; };
-		436526F12518410000F74D88 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		436526FA251842FA00F74D88 /* server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = server.c; sourceTree = "<group>"; };
+		4393CE6325298146005E2F1B /* Pipes */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Pipes; sourceTree = BUILT_PRODUCTS_DIR; };
+		4393CE6625298146005E2F1B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		436526EB2518410000F74D88 /* Frameworks */ = {
+		4393CE6025298146005E2F1B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,65 +38,64 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		436526E52518410000F74D88 = {
+		4393CE5A25298146005E2F1B = {
 			isa = PBXGroup;
 			children = (
-				436526F02518410000F74D88 /* Remote_Shell */,
-				436526EF2518410000F74D88 /* Products */,
+				4393CE6525298146005E2F1B /* Pipes */,
+				4393CE6425298146005E2F1B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		436526EF2518410000F74D88 /* Products */ = {
+		4393CE6425298146005E2F1B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				436526EE2518410000F74D88 /* Remote_Shell */,
+				4393CE6325298146005E2F1B /* Pipes */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		436526F02518410000F74D88 /* Remote_Shell */ = {
+		4393CE6525298146005E2F1B /* Pipes */ = {
 			isa = PBXGroup;
 			children = (
-				436526FA251842FA00F74D88 /* server.c */,
-				436526F12518410000F74D88 /* main.c */,
+				4393CE6625298146005E2F1B /* main.c */,
 			);
-			path = Remote_Shell;
+			path = Pipes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		436526ED2518410000F74D88 /* Remote_Shell */ = {
+		4393CE6225298146005E2F1B /* Pipes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 436526F52518410000F74D88 /* Build configuration list for PBXNativeTarget "Remote_Shell" */;
+			buildConfigurationList = 4393CE6A25298146005E2F1B /* Build configuration list for PBXNativeTarget "Pipes" */;
 			buildPhases = (
-				436526EA2518410000F74D88 /* Sources */,
-				436526EB2518410000F74D88 /* Frameworks */,
-				436526EC2518410000F74D88 /* CopyFiles */,
+				4393CE5F25298146005E2F1B /* Sources */,
+				4393CE6025298146005E2F1B /* Frameworks */,
+				4393CE6125298146005E2F1B /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = Remote_Shell;
-			productName = Remote_Shell;
-			productReference = 436526EE2518410000F74D88 /* Remote_Shell */;
+			name = Pipes;
+			productName = Pipes;
+			productReference = 4393CE6325298146005E2F1B /* Pipes */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		436526E62518410000F74D88 /* Project object */ = {
+		4393CE5B25298146005E2F1B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
-					436526ED2518410000F74D88 = {
-						CreatedOnToolsVersion = 12.0;
+					4393CE6225298146005E2F1B = {
+						CreatedOnToolsVersion = 12.0.1;
 					};
 				};
 			};
-			buildConfigurationList = 436526E92518410000F74D88 /* Build configuration list for PBXProject "Remote_Shell" */;
+			buildConfigurationList = 4393CE5E25298146005E2F1B /* Build configuration list for PBXProject "Pipes" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -106,30 +103,29 @@
 				en,
 				Base,
 			);
-			mainGroup = 436526E52518410000F74D88;
-			productRefGroup = 436526EF2518410000F74D88 /* Products */;
+			mainGroup = 4393CE5A25298146005E2F1B;
+			productRefGroup = 4393CE6425298146005E2F1B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				436526ED2518410000F74D88 /* Remote_Shell */,
+				4393CE6225298146005E2F1B /* Pipes */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		436526EA2518410000F74D88 /* Sources */ = {
+		4393CE5F25298146005E2F1B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				436526F22518410000F74D88 /* main.c in Sources */,
-				436526FC251842FA00F74D88 /* server.c in Sources */,
+				4393CE6725298146005E2F1B /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		436526F32518410000F74D88 /* Debug */ = {
+		4393CE6825298146005E2F1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -188,7 +184,7 @@
 			};
 			name = Debug;
 		};
-		436526F42518410000F74D88 /* Release */ = {
+		4393CE6925298146005E2F1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -240,7 +236,7 @@
 			};
 			name = Release;
 		};
-		436526F62518410000F74D88 /* Debug */ = {
+		4393CE6B25298146005E2F1B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -248,7 +244,7 @@
 			};
 			name = Debug;
 		};
-		436526F72518410000F74D88 /* Release */ = {
+		4393CE6C25298146005E2F1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -259,25 +255,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		436526E92518410000F74D88 /* Build configuration list for PBXProject "Remote_Shell" */ = {
+		4393CE5E25298146005E2F1B /* Build configuration list for PBXProject "Pipes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				436526F32518410000F74D88 /* Debug */,
-				436526F42518410000F74D88 /* Release */,
+				4393CE6825298146005E2F1B /* Debug */,
+				4393CE6925298146005E2F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		436526F52518410000F74D88 /* Build configuration list for PBXNativeTarget "Remote_Shell" */ = {
+		4393CE6A25298146005E2F1B /* Build configuration list for PBXNativeTarget "Pipes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				436526F62518410000F74D88 /* Debug */,
-				436526F72518410000F74D88 /* Release */,
+				4393CE6B25298146005E2F1B /* Debug */,
+				4393CE6C25298146005E2F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 436526E62518410000F74D88 /* Project object */;
+	rootObject = 4393CE5B25298146005E2F1B /* Project object */;
 }
