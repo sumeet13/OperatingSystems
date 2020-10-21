@@ -14,7 +14,7 @@
 #include <string.h>
 
 int ** matrix;
-sem_t mainSem;
+sem_t *sem;
 int n, counter;
 int phase = 1;
 bool *status;
@@ -137,10 +137,10 @@ void *sort(void *tid){
     /* For odd phase sort the rows alternatively*/
     while(1){
         
-        if(status[threadNumber]){
-            status[threadNumber] = false;
+//        if(status[threadNumber]){
+//            status[threadNumber] = false;
             
-            sem_wait(&mainSem);
+            sem_wait(&sem[threadNumber]);
 
             if(phase%2==1){
                 if(threadNumber%2==0){
@@ -157,7 +157,7 @@ void *sort(void *tid){
             counter++;
 
             
-        }
+//        }
     }
 }
 
@@ -172,14 +172,16 @@ int main(int argc, const char * argv[]) {
     
     n = atoi(argv[2]);
     
-//    n = 4;
     readInputFromFile();
     status = malloc(n * sizeof( bool));
+    sem = malloc(n * sizeof( sem_t));
     
     for (int i =0;i<n; i++){
-        status[i]= true;
+//        status[i]= true;
+        sem_init(&sem[i], 0, 1);
+        
     }
-    sem_init(&mainSem, 0, n);
+//    sem_init(&mainSem, 0, n);
     
     
     /* Create n threads*/
@@ -206,8 +208,8 @@ int main(int argc, const char * argv[]) {
             counter =0;
 
             for(int i =0;i<n;i++){
-                status[i] = true;
-                sem_post(&mainSem);
+//                status[i] = true;
+                sem_post(&sem[i]);
                 
             }
         }

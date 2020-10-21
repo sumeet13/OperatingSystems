@@ -1,6 +1,6 @@
 //
 //  main.c
-//  SemSort
+//  SemMonitors
 //
 //  Created by Sumeet Maan on 10/13/20.
 //
@@ -9,16 +9,15 @@
 #include <stdlib.h>
 #include <math.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <stdbool.h>
 #include <string.h>
-
 int ** matrix;
-sem_t mainSem;
 int n, counter;
 int phase = 1;
 bool *status;
 char *filename;
+pthread_mutex_t *mutex;
+pthread_cond_t *cond;
 /*----------------------------Function to print the matrix -------------------------------- */
 void printMatrix() {
     printf("\n");
@@ -53,7 +52,7 @@ void readInputFromFile() {
     }
     
     /* read the input file and store it in the array*/
-//    char * filename = "/Users/smaan/Documents/Classes/OS/Assignment_4/input.txt";
+    //    char * filename = "/Users/smaan/Documents/Classes/OS/Assignment_4/input.txt";
     
     fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -133,31 +132,35 @@ void insertion_sort_desc_row(int row) {
 void *sort(void *tid){
     
     int threadNumber = *(int *)tid;
+    //printf("I am in the sorting method \n");
     
     /* For odd phase sort the rows alternatively*/
     while(1){
         
-        if(status[threadNumber]){
-            status[threadNumber] = false;
-            
-            sem_wait(&mainSem);
-
-            if(phase%2==1){
-                if(threadNumber%2==0){
-                    insertion_sort_aesc_row(threadNumber);
-                }
-                else{
-                    insertion_sort_desc_row(threadNumber);
-                }
+        //        if(status[threadNumber]){
+        status[threadNumber] = true;
+        
+        pthread_mutex_lock(&mutex[threadNumber]);
+        
+        if(phase%2==1){
+            if(threadNumber%2==0){
+                insertion_sort_aesc_row(threadNumber);
             }
-            /* For even phase sort the columns alternatively*/
             else{
-                insertion_sort_aesc_column(threadNumber);
+                insertion_sort_desc_row(threadNumber);
             }
-            counter++;
-
-            
         }
+        /* For even phase sort the columns alternatively*/
+        else{
+            insertion_sort_aesc_column(threadNumber);
+        }
+        counter++;
+        while(status[threadNumber])
+            pthread_cond_wait(&cond[threadNumber], &mutex[threadNumber]);
+        pthread_mutex_unlock(&mutex[threadNumber]);
+        
+        
+        //        }
     }
 }
 
@@ -165,59 +168,67 @@ void *sort(void *tid){
 /*----------------------------Main Function ------------------------------ */
 
 int main(int argc, const char * argv[]) {
-    
+    printf("Before");
     int size = (int)strlen(argv[1]);
     filename =malloc (sizeof(char) * size);
     strcpy(filename, argv[1]);
     
     n = atoi(argv[2]);
-    
-//    n = 4;
+    printf("After");
+    //    n = 4;
     readInputFromFile();
     status = malloc(n * sizeof( bool));
     
     for (int i =0;i<n; i++){
-        status[i]= true;
+        status[i]= false;
     }
-    sem_init(&mainSem, 0, n);
+    
     
     
     /* Create n threads*/
     pthread_t p[n];
-    
+    cond = (malloc(n*sizeof(pthread_cond_t)));
+    mutex = (malloc(n*sizeof(pthread_mutex_t)));
     int tid[n];
+    /* Initilaze the n condition variables*/
+    for (int i = 0; i < n; i++) {
+        cond[i]= (pthread_cond_t)PTHREAD_COND_INITIALIZER;
+        mutex[i] = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+    }
     
-   
     /*Initialize and create n threads*/
     for (int i = 0; i < n; i++) {
         tid[i] = i;
         //create the threads and sort them accordingly
         pthread_create( &p[i], NULL, sort, &tid[i]);
     }
+
     
     
     /* Working on the phases */
     while(phase <= n + 1) {
-
+        
         if(counter==n){
             printf("Phase %d \n", phase);
             printMatrix();
             phase++;
             counter =0;
-
+            
             for(int i =0;i<n;i++){
-                status[i] = true;
-                sem_post(&mainSem);
+                
+                status[i] = false;
+                pthread_cond_signal(&cond[i]);
                 
             }
         }
     }
     
     /* Destroy the semaphores */
-    for (int i=0; i<n; i++)
-    pthread_cancel(p[i]);
-    
-    sem_destroy(&mainSem);
+    for (int i=0; i<n; i++){
+        pthread_cancel(p[i]);
+        pthread_cond_destroy(&cond[i]);
+        pthread_mutex_destroy(&mutex[i]);
+    }
     
     return 0;
     
